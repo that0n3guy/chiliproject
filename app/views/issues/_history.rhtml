@@ -2,18 +2,23 @@
 <% for journal in journals %>
   <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
     <h4><div class="journal-link"><%= link_to "##{journal.indice}", :anchor => "note-#{journal.indice}" %></div>
-    <%= avatar(journal.user, :size => "24") %>
     <%= content_tag('a', '', :name => "note-#{journal.indice}")%>
 		<%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+    </h4>
+
+    <div class="profile-wrap">
+      <%= avatar(journal.user, :size => "40") %>
+    </div>
+
+    <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
     
     <% if journal.details.any? %>
-    <ul class="details">
+    <ul class="details journal-attributes">
       <% for detail in journal.details %>
        <li><%= show_detail(detail) %></li>
       <% end %>
     </ul>
     <% end %>
-    <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
   </div>
   <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
 <% end %>
