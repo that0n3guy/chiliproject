@@ -34,6 +34,7 @@ class MembersController < ApplicationController
         members << Member.new(attrs)
       end
       @project.members << members
+      session[:new_member_roles_sticky] = params[:member][:role_ids].collect(&:to_s) if params[:member][:role_ids].present?
     end
     respond_to do |format|
       if members.present? && members.all? {|m| m.valid? }

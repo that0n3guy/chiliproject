@@ -64,6 +64,12 @@ class MembersControllerTest < ActionController::TestCase
 
         assert_select_rjs :replace_html, 'tab-content-members'
       end
+
+      should "store the roles used in the session (sticky)" do
+        post :new, :format => "js", :id => 1, :member => {:role_ids => [1], :user_ids => [7, 8, 9]}
+
+        assert_equal ["1"], session[:new_member_roles_sticky]
+      end
       
     end
 

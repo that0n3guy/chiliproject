@@ -270,6 +270,32 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to :action => 'edit', :id => '2', :tab => 'memberships'
     assert_equal [2], Member.find(1).role_ids
   end
+
+  context "new membership" do
+    should "add a new member" do
+
+      assert_difference("Member.count") do
+        post(:edit_membership,
+             :id => 2,
+             :membership => {
+               :role_ids => [2],
+               :project_id => '4'
+             })
+      end
+
+    end
+
+    should "store the roles used in the session (stick)" do
+      post(:edit_membership,
+           :id => 2,
+           :membership => {
+             :role_ids => [2],
+             :project_id => '4'
+           })
+      
+      assert_equal ["2"], session[:new_member_roles_sticky]
+    end
+  end
   
   def test_destroy_membership
     post :destroy_membership, :id => 2, :membership_id => 1

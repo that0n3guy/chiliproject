@@ -180,6 +180,8 @@ class UsersController < ApplicationController
   def edit_membership
     @membership = Member.edit_membership(params[:membership_id], params[:membership], @user)
     @membership.save if request.post?
+    session[:new_member_roles_sticky] = params[:membership][:role_ids].collect(&:to_s) if request.post? && params[:membership][:role_ids].present?
+
     respond_to do |format|
       if @membership.valid?
         format.html { redirect_to :controller => 'users', :action => 'edit', :id => @user, :tab => 'memberships' }

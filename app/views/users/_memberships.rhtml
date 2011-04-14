@@ -53,7 +53,7 @@
 <%= select_tag 'membership[project_id]', options_for_membership_project_select(@user, projects) %>
 <p><%= l(:label_role_plural) %>:
 <% roles.each do |role| %>
-  <label><%= check_box_tag 'membership[role_ids][]', role.id %> <%=h role %></label>
+  <label><%= check_box_tag 'membership[role_ids][]', role.id, (session[:new_member_roles_sticky]||[]).include?(role.id.to_s) %> <%=h role %></label>
 <% end %></p>
 <p><%= submit_tag l(:button_add) %></p>
 <% end %>
